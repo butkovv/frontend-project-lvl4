@@ -1,17 +1,34 @@
-develop:
+install: install-deps
+
+start:
+	heroku local -f Procfile.dev
+
+start-backend:
+	npx nodemon --exec npx babel-node server/bin/slack.js
+
+start-frontend:
 	npx webpack-dev-server
 
-install:
+install-deps:
 	npm install
 
 build:
 	rm -rf dist
-	NODE_ENV=production npx webpack
+	npm run build
 
 test:
-	npm test
+	npm test -s
+
+test-coverage:
+	npm test -- --coverage
 
 lint:
-	npx eslint .
+	npx eslint . --ext js,jsx
+
+publish:
+	npm publish
+
+deploy:
+	git push heroku
 
 .PHONY: test
