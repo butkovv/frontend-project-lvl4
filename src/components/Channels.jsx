@@ -21,7 +21,7 @@ const Channels = ({ channels, channelsFetchingState }) => {
 
   if (channelsFetchingState === 'failed') {
     return (
-      <span>Unable to fetch channel list. Please, reload page.</span>
+      <span>Unable to fetch channel list. Please reload.</span>
     );
   }
 
@@ -31,14 +31,13 @@ const Channels = ({ channels, channelsFetchingState }) => {
         <span>Channels</span>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
-        {channels
-          && channels.map(({ id, name }) => (
-            <li key={id} className="nav-item">
-              <button type="button" className="nav-link btn-block mb-2 text-left btn btn-light">
-                {name}
-              </button>
-            </li>
-          ))}
+        {channels && channels.map(({ id, name }) => (
+          <li key={id} className="nav-item">
+            <button type="button" className="nav-link btn-block mb-2 text-left btn btn-light">
+              {name}
+            </button>
+          </li>
+        ))}
       </ul>
     </div>
   );

@@ -26,7 +26,7 @@ export const fetchMessagesFailure = createAction('MESSAGES_FETCH_FAILURE');
 export const fetchMessages = () => async (dispatch) => {
   dispatch(fetchMessagesRequest());
   try {
-    const url = routes.channelMessagesPath(0);
+    const url = routes.channelMessagesPath(1);
     const response = await axios.get(url);
     dispatch(fetchMessagesSuccess({ messages: response.data }));
   } catch (e) {

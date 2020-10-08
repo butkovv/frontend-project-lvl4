@@ -6,13 +6,14 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import gon from 'gon';
+import Cookies from 'js-cookie';
+import faker from 'faker';
 import reducers from './reducers/index.js';
 import App from './components/App.jsx';
 import '../assets/application.scss';
 import { fetchChannels } from './actions/index.js';
+import UserNameContext from './context.jsx';
 
-// import faker from 'faker';
-// import cookies from 'js-cookie';
 // import io from 'socket.io-client';
 /* eslint-disable no-underscore-dangle */
 const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
@@ -22,7 +23,9 @@ const devtoolMiddleware = ext && ext();
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-
+if (!Cookies.get('name')) {
+  Cookies.set('name', faker.internet.userName());
+}
 console.log('it works!');
 console.log('gon', gon);
 
@@ -34,10 +37,13 @@ const store = createStore(
   ),
 );
 store.dispatch(fetchChannels());
-// const { channels, messages, currentChannelId } = gon;
+const userName = Cookies.get('name');
+console.log(userName);
 render(
   <Provider store={store}>
-    <App />
+    <UserNameContext.Provider value={userName}>
+      <App />
+    </UserNameContext.Provider>
   </Provider>,
   document.getElementById('chat'),
 );

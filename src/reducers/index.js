@@ -19,7 +19,7 @@ const channels = handleActions({
   [actions.fetchChannelsSuccess](state, { payload }) {
     return {
       byId: _.keyBy(payload.channels, 'id'),
-      allIds: payload.channels.map((t) => t.id),
+      allIds: payload.channels.map((c) => c.id),
     };
   },
 },
@@ -41,7 +41,7 @@ const messages = handleActions({
   [actions.fetchMessagesSuccess](state, { payload }) {
     return {
       byId: _.keyBy(payload.messages, 'id'),
-      allIds: payload.messages.map((t) => t.id),
+      allIds: payload.messages.map((m) => m.id),
     };
   },
 },
