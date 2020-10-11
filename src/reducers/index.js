@@ -3,20 +3,8 @@ import { handleActions } from 'redux-actions';
 import _ from 'lodash';
 import * as actions from '../actions';
 
-const channelsFetchingState = handleActions({
-  [actions.fetchChannelsRequest]() {
-    return 'requested';
-  },
-  [actions.fetchChannelsFailure]() {
-    return 'failed';
-  },
-  [actions.fetchChannelsSuccess]() {
-    return 'finished';
-  },
-}, 'none');
-
 const channels = handleActions({
-  [actions.fetchChannelsSuccess](state, { payload }) {
+  [actions.getChannels](state, { payload }) {
     return {
       byId: _.keyBy(payload.channels, 'id'),
       allIds: payload.channels.map((c) => c.id),
@@ -25,28 +13,14 @@ const channels = handleActions({
 },
 { byId: {}, allIds: [] });
 
-const messagesFetchingState = handleActions({
-  [actions.fetchMessagesRequest]() {
-    return 'requested';
-  },
-  [actions.fetchMessagesFailure]() {
-    return 'failed';
-  },
-  [actions.fetchMessagesSuccess]() {
-    return 'finished';
-  },
-}, 'none');
-
 const messages = handleActions({
-  [actions.fetchMessagesSuccess](state, { payload }) {
+  [actions.getMessages](state, { payload }) {
     return {
       byId: _.keyBy(payload.messages, 'id'),
       allIds: payload.messages.map((m) => m.id),
     };
   },
   [actions.addMessage](state, { payload }) {
-    // const { message } = payload;
-    console.log(payload);
     const { byId, allIds } = state;
     return {
       byId: { ...byId, [payload.id]: payload },
@@ -57,8 +31,6 @@ const messages = handleActions({
 { byId: {}, allIds: [] });
 
 export default combineReducers({
-  channelsFetchingState,
   channels,
-  messagesFetchingState,
   messages,
 });

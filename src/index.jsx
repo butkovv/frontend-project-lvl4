@@ -12,7 +12,7 @@ import io from 'socket.io-client';
 import reducers from './reducers/index.js';
 import App from './components/App.jsx';
 import '../assets/application.scss';
-import { fetchChannelsSuccess, fetchMessagesSuccess, addMessage } from './actions/index.js';
+import { getChannels, getMessages, addMessage } from './actions/index.js';
 import UserNameContext from './context.jsx';
 
 /* eslint-disable no-underscore-dangle */
@@ -42,8 +42,8 @@ const socket = io();
 socket.on('newMessage', (msg) => {
   store.dispatch(addMessage(msg.data.attributes));
 });
-store.dispatch(fetchChannelsSuccess({ channels: gon.channels }));
-store.dispatch(fetchMessagesSuccess({ messages: gon.messages }));
+store.dispatch(getChannels({ channels: gon.channels }));
+store.dispatch(getMessages({ messages: gon.messages }));
 
 render(
   <Provider store={store}>
