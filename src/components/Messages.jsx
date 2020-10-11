@@ -6,7 +6,7 @@ const mapStateToProps = (state) => {
     messagesFetchingState,
     messages: { byId, allIds },
   } = state;
-  const messages = allIds.map((id) => byId[id].attributes);
+  const messages = allIds.map((id) => byId[id]);
   return { messages, messagesFetchingState };
 };
 

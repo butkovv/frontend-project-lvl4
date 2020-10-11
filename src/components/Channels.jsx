@@ -6,7 +6,7 @@ const mapStateToProps = (state) => {
     channelsFetchingState,
     channels: { byId, allIds },
   } = state;
-  const channels = allIds.map((id) => byId[id].attributes);
+  const channels = allIds.map((id) => byId[id]);
   return { channels, channelsFetchingState };
 };
 
