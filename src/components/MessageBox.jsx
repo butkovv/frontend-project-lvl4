@@ -20,7 +20,7 @@ const Basic = () => {
           }
           return errors;
         }}
-        onSubmit={(value, { setSubmitting }) => {
+        onSubmit={(value, { setSubmitting, resetForm }) => {
           const messageData = {
             data: {
               attributes: {
@@ -31,11 +31,12 @@ const Basic = () => {
           axios.post(routes.channelMessagesPath(1), messageData)
             .then((response) => {
               console.log(response);
+              setSubmitting(false);
+              resetForm();
             })
             .catch((error) => {
               console.log(error);
             });
-          setSubmitting(false);
         }}
       >
         {({ isSubmitting }) => (

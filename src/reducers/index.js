@@ -44,6 +44,15 @@ const messages = handleActions({
       allIds: payload.messages.map((m) => m.id),
     };
   },
+  [actions.addMessage](state, { payload }) {
+    // const { message } = payload;
+    console.log(payload);
+    const { byId, allIds } = state;
+    return {
+      byId: { ...byId, [payload.id]: payload },
+      allIds: [...allIds, payload.id],
+    };
+  },
 },
 { byId: {}, allIds: [] });
 

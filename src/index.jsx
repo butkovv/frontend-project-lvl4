@@ -8,13 +8,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import gon from 'gon';
 import Cookies from 'js-cookie';
 import faker from 'faker';
+import io from 'socket.io-client';
 import reducers from './reducers/index.js';
 import App from './components/App.jsx';
 import '../assets/application.scss';
-import { fetchChannels } from './actions/index.js';
+import { fetchChannels, fetchMessages, addMessage } from './actions/index.js';
 import UserNameContext from './context.jsx';
 
-// import io from 'socket.io-client';
 /* eslint-disable no-underscore-dangle */
 const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
 const devtoolMiddleware = ext && ext();
@@ -26,6 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
 if (!Cookies.get('name')) {
   Cookies.set('name', faker.internet.userName());
 }
+const userName = Cookies.get('name');
 console.log('it works!');
 console.log('gon', gon);
 
@@ -36,9 +37,14 @@ const store = createStore(
     devtoolMiddleware,
   ),
 );
+const socket = io();
+socket.on('newMessage', (msg) => {
+  console.log(msg.data);
+  store.dispatch(addMessage(msg.data));
+});
 store.dispatch(fetchChannels());
-const userName = Cookies.get('name');
-console.log(userName);
+store.dispatch(fetchMessages(1));
+
 render(
   <Provider store={store}>
     <UserNameContext.Provider value={userName}>
