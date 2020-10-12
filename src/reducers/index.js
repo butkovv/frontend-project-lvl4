@@ -3,15 +3,23 @@ import { handleActions } from 'redux-actions';
 import _ from 'lodash';
 import * as actions from '../actions';
 
-const channels = handleActions({
+const channelsInfo = handleActions({
   [actions.getChannels](state, { payload }) {
+    const { currentChannelId } = state;
     return {
-      byId: _.keyBy(payload.channels, 'id'),
-      allIds: payload.channels.map((c) => c.id),
+      channels: {
+        byId: _.keyBy(payload.channels, 'id'),
+        allIds: payload.channels.map((c) => c.id),
+      },
+      currentChannelId,
     };
   },
+  [actions.setCurrentChannel](state, { payload }) {
+    const { channels } = state;
+    return { channels, currentChannelId: payload.id };
+  },
 },
-{ byId: {}, allIds: [] });
+{ channels: { byId: {}, allIds: [] }, currentChannelId: 1 });
 
 const messages = handleActions({
   [actions.getMessages](state, { payload }) {
@@ -31,6 +39,6 @@ const messages = handleActions({
 { byId: {}, allIds: [] });
 
 export default combineReducers({
-  channels,
+  channelsInfo,
   messages,
 });
