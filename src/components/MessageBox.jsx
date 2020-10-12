@@ -7,7 +7,7 @@ import _ from 'lodash';
 import routes from '../routes.js';
 import UserNameContext from '../context.jsx';
 
-const Basic = () => {
+const MessageBox = () => {
   const nickname = React.useContext(UserNameContext);
   return (
     <div className="mt-auto">
@@ -52,4 +52,4 @@ const Basic = () => {
     </div>
   );
 };
-export default Basic;
+export default MessageBox;
