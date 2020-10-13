@@ -18,6 +18,16 @@ const channelsInfo = handleActions({
     const { channels } = state;
     return { channels, currentChannelId: payload.id };
   },
+  [actions.createChannel](state, { payload }) {
+    const { channels: { byId, allIds }, currentChannelId } = state;
+    return {
+      currentChannelId,
+      channels: {
+        byId: { ...byId, [payload.id]: payload },
+        allIds: [...allIds, payload.id],
+      },
+    };
+  },
 },
 { channels: { byId: {}, allIds: [] }, currentChannelId: 1 });
 
@@ -38,7 +48,14 @@ const messages = handleActions({
 },
 { byId: {}, allIds: [] });
 
+const modal = handleActions({
+  [actions.showModal](state, { payload }) {
+    return { ...state, show: payload.show };
+  },
+}, { show: false });
+
 export default combineReducers({
   channelsInfo,
   messages,
+  modal,
 });

@@ -12,7 +12,9 @@ import io from 'socket.io-client';
 import reducers from './reducers/index.js';
 import App from './components/App.jsx';
 import '../assets/application.scss';
-import { getChannels, getMessages, addMessage } from './actions/index.js';
+import {
+  getChannels, getMessages, addMessage, createChannel,
+} from './actions/index.js';
 import UserNameContext from './context.jsx';
 
 /* eslint-disable no-underscore-dangle */
@@ -41,6 +43,9 @@ const store = createStore(
 const socket = io();
 socket.on('newMessage', (msg) => {
   store.dispatch(addMessage(msg.data.attributes));
+});
+socket.on('newChannel', (channel) => {
+  store.dispatch(createChannel(channel.data.attributes));
 });
 store.dispatch(getChannels({ channels: gon.channels }));
 store.dispatch(getMessages({ messages: gon.messages }));

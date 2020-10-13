@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Formik, Form, Field, ErrorMessage,
+  Form, Formik, Field, ErrorMessage,
 } from 'formik';
+import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import _ from 'lodash';
 import routes from '../routes.js';
@@ -55,9 +56,9 @@ class MessageBox extends React.Component {
             <Form>
               <Field type="text" name="message" />
               <ErrorMessage name="message" component="div" />
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Submit
-              </button>
+              </Button>
             </Form>
           )}
         </Formik>
