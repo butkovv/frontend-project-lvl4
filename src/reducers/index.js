@@ -28,6 +28,17 @@ const channelsInfo = handleActions({
       },
     };
   },
+  [actions.removeChannel](state, { payload }) {
+    const { channels: { byId, allIds }, currentChannelId } = state;
+    console.log(payload);
+    return {
+      currentChannelId,
+      channels: {
+        byId: _.omit(byId, payload.id),
+        allIds: allIds.filter((id) => (id !== payload.id)),
+      },
+    };
+  },
 },
 { channels: { byId: {}, allIds: [] }, currentChannelId: 1 });
 
@@ -45,14 +56,29 @@ const messages = handleActions({
       allIds: [...allIds, payload.id],
     };
   },
+  [actions.removeChannel](state, { payload }) {
+    const { byId } = state;
+    const channelId = payload.id;
+    const updatedMessages = _.omitBy(byId, (msg) => msg.channelId === channelId);
+    return {
+      byId: updatedMessages,
+      allIds: Object.keys(updatedMessages),
+    };
+  },
 },
 { byId: {}, allIds: [] });
 
 const modal = handleActions({
+  [actions.setModalType](state, { payload }) {
+    return { ...state, type: payload.type };
+  },
   [actions.showModal](state, { payload }) {
     return { ...state, show: payload.show };
   },
-}, { show: false });
+  [actions.setModalExtra](state, { payload }) {
+    return { ...state, extra: payload };
+  },
+}, { show: false, type: null, extra: null });
 
 export default combineReducers({
   channelsInfo,

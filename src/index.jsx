@@ -13,7 +13,7 @@ import reducers from './reducers/index.js';
 import App from './components/App.jsx';
 import '../assets/application.scss';
 import {
-  getChannels, getMessages, addMessage, createChannel,
+  getChannels, getMessages, addMessage, createChannel, removeChannel,
 } from './actions/index.js';
 import UserNameContext from './context.jsx';
 
@@ -46,6 +46,9 @@ socket.on('newMessage', (msg) => {
 });
 socket.on('newChannel', (channel) => {
   store.dispatch(createChannel(channel.data.attributes));
+});
+socket.on('removeChannel', (response) => {
+  store.dispatch(removeChannel(response.data));
 });
 store.dispatch(getChannels({ channels: gon.channels }));
 store.dispatch(getMessages({ messages: gon.messages }));
