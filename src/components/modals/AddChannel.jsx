@@ -57,7 +57,7 @@ const NewChannelModal = ({ show, showModal }) => {
             }) => (
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
-                  <Form.Label>Channel name</Form.Label>
+                  <Form.Label>Enter channel name</Form.Label>
                   <Form.Control
                     type="text"
                     name="channelName"

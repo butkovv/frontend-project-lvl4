@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
-import {
-  Form, Formik, Field, ErrorMessage,
-} from 'formik';
+import { Formik } from 'formik';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import _ from 'lodash';
@@ -17,7 +18,13 @@ const mapStateToProps = (state) => {
 
 const MessageBox = ({ currentChannelId }) => {
   const nickname = useContext(UserNameContext);
-  const submitNewMessage = (value, { setSubmitting, resetForm }) => {
+
+  const submitMessage = (value, { setSubmitting, resetForm }) => {
+    if (value.message.length === 0) {
+      setSubmitting(false);
+      resetForm();
+      return;
+    }
     const messageData = {
       data: {
         attributes: {
@@ -27,7 +34,6 @@ const MessageBox = ({ currentChannelId }) => {
         },
       },
     };
-    console.log(messageData);
     axios.post(routes.channelMessagesPath(currentChannelId), messageData)
       .then((response) => {
         console.log(response);
@@ -38,26 +44,33 @@ const MessageBox = ({ currentChannelId }) => {
         console.log(error);
       });
   };
+
   return (
     <div className="mt-auto">
       <Formik
-        initialValues={{ message: '' }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.message) {
-            errors.message = 'Required';
-          }
-          return errors;
+        onSubmit={submitMessage}
+        initialValues={{
+          message: '',
         }}
-        onSubmit={submitNewMessage}
       >
-        {({ isSubmitting }) => (
-          <Form>
-            <Field type="text" name="message" />
-            <ErrorMessage name="message" component="div" />
-            <Button type="submit" disabled={isSubmitting}>
-              Submit
-            </Button>
+        {({
+          handleSubmit,
+          handleChange,
+          values,
+        }) => (
+          <Form noValidate onSubmit={handleSubmit}>
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Message"
+                type="text"
+                name="message"
+                value={values.message}
+                onChange={handleChange}
+              />
+              <InputGroup.Append>
+                <Button variant="primary" type="submit">Send</Button>
+              </InputGroup.Append>
+            </InputGroup>
           </Form>
         )}
       </Formik>

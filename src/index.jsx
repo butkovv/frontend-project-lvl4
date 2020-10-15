@@ -18,8 +18,8 @@ import {
 import UserNameContext from './context.jsx';
 
 /* eslint-disable no-underscore-dangle */
-// const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
-// const devtoolMiddleware = ext && ext();
+const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
+const devtoolMiddleware = ext && ext();
 /* eslint-enable */
 
 if (process.env.NODE_ENV !== 'production') {
@@ -36,7 +36,7 @@ const store = createStore(
   reducers,
   compose(
     applyMiddleware(thunk),
-    // devtoolMiddleware,
+    devtoolMiddleware,
   ),
 );
 
