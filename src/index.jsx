@@ -13,13 +13,13 @@ import reducers from './reducers/index.js';
 import App from './components/App.jsx';
 import '../assets/application.scss';
 import {
-  getChannels, getMessages, addMessage, createChannel, removeChannel,
+  getChannels, getMessages, addMessage, createChannel, removeChannel, renameChannel,
 } from './actions/index.js';
 import UserNameContext from './context.jsx';
 
 /* eslint-disable no-underscore-dangle */
-const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
-const devtoolMiddleware = ext && ext();
+// const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
+// const devtoolMiddleware = ext && ext();
 /* eslint-enable */
 
 if (process.env.NODE_ENV !== 'production') {
@@ -36,7 +36,7 @@ const store = createStore(
   reducers,
   compose(
     applyMiddleware(thunk),
-    devtoolMiddleware,
+    // devtoolMiddleware,
   ),
 );
 
@@ -49,6 +49,9 @@ socket.on('newChannel', (channel) => {
 });
 socket.on('removeChannel', (response) => {
   store.dispatch(removeChannel(response.data));
+});
+socket.on('renameChannel', (response) => {
+  store.dispatch(renameChannel(response.data.attributes));
 });
 store.dispatch(getChannels({ channels: gon.channels }));
 store.dispatch(getMessages({ messages: gon.messages }));

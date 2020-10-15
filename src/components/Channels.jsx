@@ -40,6 +40,12 @@ const Channels = ({
     showModal({ show: true });
   };
 
+  const handleRenameChannel = (channelId) => () => {
+    setModalType({ type: 'RenameChannel' });
+    setModalExtra({ channelId });
+    showModal({ show: true });
+  };
+
   const renderButton = ({ id, name, removable }) => {
     if (removable) {
       return (
@@ -54,7 +60,7 @@ const Channels = ({
             </Button>
             <DropdownButton as={ButtonGroup} variant={id === currentChannelId ? 'primary' : 'light'} title="" id="bg-nested-dropdown">
               <Dropdown.Item eventKey="1" onClick={handleRemoveChannel(id)}>Remove</Dropdown.Item>
-              <Dropdown.Item eventKey="2">Rename</Dropdown.Item>
+              <Dropdown.Item eventKey="2" onClick={handleRenameChannel(id)}>Rename</Dropdown.Item>
             </DropdownButton>
           </ButtonGroup>
         </li>

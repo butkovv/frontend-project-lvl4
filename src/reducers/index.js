@@ -28,9 +28,20 @@ const channelsInfo = handleActions({
       },
     };
   },
+  [actions.renameChannel](state, { payload }) {
+    const { channels: { byId, allIds }, currentChannelId } = state;
+    const { id, name } = payload;
+    const updatedElement = { ...byId[id], name };
+    return {
+      currentChannelId,
+      channels: {
+        byId: { ...byId, [id]: updatedElement },
+        allIds,
+      },
+    };
+  },
   [actions.removeChannel](state, { payload }) {
     const { channels: { byId, allIds }, currentChannelId } = state;
-    console.log(payload);
     return {
       currentChannelId,
       channels: {
