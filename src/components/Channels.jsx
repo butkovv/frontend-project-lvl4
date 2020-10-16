@@ -8,8 +8,7 @@ import * as actions from '../actions';
 import Modal from './modals';
 
 const mapStateToProps = (state) => {
-  const { channelsInfo, modal } = state;
-  const { channels: { byId, allIds }, currentChannelId } = channelsInfo;
+  const { channelsInfo: { channels: { byId, allIds }, currentChannelId }, modal } = state;
   const channels = allIds.map((id) => byId[id]);
   const modalType = modal.type;
   return { channels, currentChannelId, modalType };

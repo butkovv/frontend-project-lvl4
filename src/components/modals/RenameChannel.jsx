@@ -9,9 +9,9 @@ import * as actions from '../../actions';
 import routes from '../../routes.js';
 
 const mapStateToProps = (state) => {
-  const { modal } = state;
-  const { show, extra } = modal;
-  return { show, channelId: extra.channelId };
+  const { modal: { show, extra } } = state;
+  const { channelId } = extra;
+  return { show, channelId };
 };
 
 const actionCreators = {
@@ -24,6 +24,7 @@ const RenameChannelModal = ({
   show, channelId, showModal, setModalExtra,
 }) => {
   const handleClose = () => showModal({ show: false });
+
   const submitNewChannelName = (value, { setSubmitting }) => {
     const payload = {
       data: {
@@ -41,6 +42,7 @@ const RenameChannelModal = ({
         console.log(error);
       });
   };
+
   return (
     <>
       <Modal show={show} onHide={handleClose}>

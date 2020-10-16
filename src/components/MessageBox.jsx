@@ -11,8 +11,7 @@ import routes from '../routes.js';
 import UserNameContext from '../context.jsx';
 
 const mapStateToProps = (state) => {
-  const { channelsInfo } = state;
-  const { currentChannelId } = channelsInfo;
+  const { channelsInfo: { currentChannelId } } = state;
   return { currentChannelId };
 };
 

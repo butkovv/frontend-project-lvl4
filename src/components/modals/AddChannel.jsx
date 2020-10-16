@@ -9,8 +9,7 @@ import * as actions from '../../actions';
 import routes from '../../routes.js';
 
 const mapStateToProps = (state) => {
-  const { modal } = state;
-  const { show } = modal;
+  const { modal: { show } } = state;
   return { show };
 };
 
