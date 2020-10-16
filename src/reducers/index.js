@@ -51,7 +51,7 @@ const channelsInfo = handleActions({
     };
   },
 },
-{ channels: { byId: {}, allIds: [] }, currentChannelId: 1 });
+{ channels: { byId: {}, allIds: [] }, currentChannelId: null });
 
 const messages = handleActions({
   [actions.getMessages](state, { payload }) {
