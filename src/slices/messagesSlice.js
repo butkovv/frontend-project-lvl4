@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { actions as channelsActions } from './channelsSlice';
 
-const messagesSlice = createSlice({
+const slice = createSlice({
   name: 'messages',
   initialState: [],
   reducers: {
@@ -19,5 +19,5 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { actions } = messagesSlice;
-export default messagesSlice.reducer;
+export const { actions } = slice;
+export default slice.reducer;

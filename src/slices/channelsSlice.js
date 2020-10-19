@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-const channelsSlice = createSlice({
+const slice = createSlice({
   name: 'channels',
   initialState: {
     items: [],
@@ -28,5 +28,5 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { actions } = channelsSlice;
-export default channelsSlice.reducer;
+export const { actions } = slice;
+export default slice.reducer;
