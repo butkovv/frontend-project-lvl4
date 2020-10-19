@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import * as actions from '../../actions';
+import { actions } from '../../slices';
 import routes from '../../routes.js';
 
 const mapStateToProps = (state) => {

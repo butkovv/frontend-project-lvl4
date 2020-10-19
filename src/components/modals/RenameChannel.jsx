@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import axios from 'axios';
-import * as actions from '../../actions';
+import { actions } from '../../slices';
 import routes from '../../routes.js';
 
 const mapStateToProps = (state) => {

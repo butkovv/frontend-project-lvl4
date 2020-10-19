@@ -1,25 +1,20 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React from 'react';
-import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import faker from 'faker';
 import io from 'socket.io-client';
-import reducers from './reducers/index.js';
 import App from './components/App.jsx';
 import '../assets/application.scss';
-import {
-  getChannels, getMessages, addMessage, createChannel, removeChannel, renameChannel,
-  setCurrentChannel,
-} from './actions/index.js';
+import reducers, { actions } from './slices';
 import UserNameContext from './context.jsx';
 
 /* eslint-disable no-underscore-dangle */
-const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
-const devtoolMiddleware = ext && ext();
+// const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
+// const devtoolMiddleware = ext && ext();
 /* eslint-enable */
 
 export default (gon) => {
@@ -30,30 +25,26 @@ export default (gon) => {
   console.log('it works!');
   console.log('gon', gon);
 
-  const store = createStore(
-    reducers,
-    compose(
-      applyMiddleware(thunk),
-      devtoolMiddleware,
-    ),
-  );
+  const store = configureStore({
+    reducer: reducers,
+  });
 
-  store.dispatch(getChannels({ channels: gon.channels }));
-  store.dispatch(getMessages({ messages: gon.messages }));
-  store.dispatch(setCurrentChannel({ id: gon.currentChannelId }));
+  store.dispatch(actions.getChannels({ channels: gon.channels }));
+  store.dispatch(actions.getMessages({ messages: gon.messages }));
+  store.dispatch(actions.setCurrentChannel({ id: gon.currentChannelId }));
 
   const socket = io();
   socket.on('newMessage', (msg) => {
-    store.dispatch(addMessage(msg.data.attributes));
+    store.dispatch(actions.addMessage(msg.data.attributes));
   });
   socket.on('newChannel', (channel) => {
-    store.dispatch(createChannel(channel.data.attributes));
+    store.dispatch(actions.createChannel(channel.data.attributes));
   });
   socket.on('removeChannel', (response) => {
-    store.dispatch(removeChannel(response.data));
+    store.dispatch(actions.removeChannel(response.data));
   });
   socket.on('renameChannel', (response) => {
-    store.dispatch(renameChannel(response.data.attributes));
+    store.dispatch(actions.renameChannel(response.data.attributes));
   });
 
   render(

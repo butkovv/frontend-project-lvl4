@@ -4,13 +4,13 @@ import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import * as actions from '../actions';
+import { actions } from '../slices';
 import Modal from './modals';
 
 const mapStateToProps = (state) => {
-  const { channelsInfo: { channels: { byId, allIds }, currentChannelId }, modal } = state;
-  const channels = allIds.map((id) => byId[id]);
-  const modalType = modal.type;
+  const channels = state.channels.items;
+  const { currentChannelId } = state.channels;
+  const modalType = state.modal.type;
   return { channels, currentChannelId, modalType };
 };
 
@@ -20,7 +20,6 @@ const actionCreators = {
   setModalExtra: actions.setModalExtra,
   showModal: actions.showModal,
 };
-
 const Channels = ({
   setCurrentChannel, setModalType, setModalExtra, showModal, currentChannelId, channels, modalType,
 }) => {

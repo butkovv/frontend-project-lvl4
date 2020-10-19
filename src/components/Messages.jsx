@@ -2,11 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
-  const {
-    messages: { byId, allIds },
-    channelsInfo: { currentChannelId },
-  } = state;
-  const messages = allIds.map((id) => byId[id]);
+  const { messages, channels: { currentChannelId } } = state;
   return { messages, currentChannelId };
 };
 
