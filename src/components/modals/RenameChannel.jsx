@@ -4,43 +4,36 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
-import axios from 'axios';
-import { actions } from '../../slices';
-import routes from '../../routes.js';
+import { actions, asyncActions } from '../../slices';
 
 const mapStateToProps = (state) => {
   const { modal: { show, extra } } = state;
-  const { channelId } = extra;
-  return { show, channelId };
+  const id = extra.channelId;
+  return { show, id };
 };
 
 const actionCreators = {
   showModal: actions.showModal,
   setModalType: actions.setModalType,
   setModalExtra: actions.setModalExtra,
+  renameChannel: asyncActions.renameChannel,
 };
 
 const RenameChannelModal = ({
-  show, channelId, showModal, setModalExtra,
+  show, id, showModal, setModalExtra, renameChannel,
 }) => {
   const handleClose = () => showModal({ show: false });
 
-  const submitNewChannelName = (value, { setSubmitting }) => {
-    const payload = {
-      data: {
-        attributes: { name: value.newName },
-      },
-    };
-    axios.patch(routes.channelPath(channelId), payload)
-      .then((response) => {
-        console.log(response);
-        setSubmitting(false);
-        setModalExtra({ channelId: null });
-        showModal(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const submitNewChannelName = async (value, { setSubmitting }) => {
+    const name = value.newName;
+    try {
+      await renameChannel({ id, name });
+      setSubmitting(false);
+      setModalExtra({ channelId: null });
+      showModal({ show: false });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

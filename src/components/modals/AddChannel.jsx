@@ -4,9 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
-import axios from 'axios';
-import { actions } from '../../slices';
-import routes from '../../routes.js';
+import { actions, asyncActions } from '../../slices';
 
 const mapStateToProps = (state) => {
   const { modal: { show } } = state;
@@ -15,27 +13,23 @@ const mapStateToProps = (state) => {
 
 const actionCreators = {
   showModal: actions.showModal,
+  createChannel: asyncActions.createChannel,
 };
 
-const NewChannelModal = ({ show, showModal }) => {
+const NewChannelModal = ({ show, showModal, createChannel }) => {
   const handleClose = () => showModal({ show: false });
-  const submitNewChannel = (value, { setSubmitting }) => {
-    const channelData = {
-      data: {
-        attributes: { name: value.channelName },
-      },
-    };
-    console.log(channelData);
-    axios.post(routes.channelsPath(), channelData)
-      .then((response) => {
-        console.log(response);
-        setSubmitting(false);
-        showModal(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+  const submitNewChannel = async (value, { setSubmitting }) => {
+    const name = value.channelName;
+    try {
+      await createChannel({ name });
+      setSubmitting(false);
+      showModal({ show: false });
+    } catch (e) {
+      console.log(e);
+    }
   };
+
   return (
     <>
       <Modal show={show} onHide={handleClose}>

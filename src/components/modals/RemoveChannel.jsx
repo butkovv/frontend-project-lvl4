@@ -2,38 +2,36 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { actions } from '../../slices';
-import routes from '../../routes.js';
+import { actions, asyncActions } from '../../slices';
 
 const mapStateToProps = (state) => {
   const { modal } = state;
   const { show, extra } = modal;
-  return { show, channelId: extra.channelId };
+  return { show, id: extra.channelId };
 };
 
 const actionCreators = {
   showModal: actions.showModal,
   setModalType: actions.setModalType,
   setModalExtra: actions.setModalExtra,
+  removeChannel: asyncActions.removeChannel,
 };
 
 const RemoveChannelModal = ({
-  show, channelId, showModal, setModalExtra,
+  show, id, showModal, setModalExtra, removeChannel,
 }) => {
   const handleClose = () => showModal({ show: false });
-  const submitRemoval = () => {
-    axios.delete(routes.channelPath(channelId))
-      .then((response) => {
-        console.log(response);
-        // setModalType(null);
-        setModalExtra({ channelId: null });
-        showModal(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+  const submitRemoval = async () => {
+    try {
+      await removeChannel({ id });
+      setModalExtra({ channelId: null });
+      showModal({ show: false });
+    } catch (e) {
+      console.log(e);
+    }
   };
+
   return (
     <>
       <Modal show={show} onHide={handleClose}>
