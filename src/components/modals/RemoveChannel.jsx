@@ -25,8 +25,8 @@ const RemoveChannelModal = ({
   const submitRemoval = async () => {
     try {
       await removeChannel({ id });
-      setModalExtra({ channelId: null });
       showModal({ show: false });
+      setModalExtra({ channelId: null });
     } catch (e) {
       console.log(e);
     }

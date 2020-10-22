@@ -24,13 +24,12 @@ const slice = createSlice({
     },
   },
   extraReducers: {
-    [addMessage.fulfilled]() {},
+    [addMessage.fulfilled]() { },
     [addMessage.rejected]() {
       throw new Error();
     },
-    [channelsActions.removeChannel](state, { payload }) {
-      state.filter((message) => message.channelId !== payload.id);
-    },
+    [channelsActions.removeChannelSuccess]:
+    (state, { payload: { id } }) => state.filter((message) => message.channelId !== id),
   },
 });
 
