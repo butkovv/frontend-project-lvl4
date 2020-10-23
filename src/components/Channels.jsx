@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useTranslation } from 'react-i18next';
 import { actions } from '../slices';
 import Modal from './modals';
 
@@ -23,6 +24,8 @@ const actionCreators = {
 const Channels = ({
   setCurrentChannel, setModalType, setModalExtra, showModal, currentChannelId, channels, modalType,
 }) => {
+  const { t } = useTranslation();
+
   const handleSelectChannel = (id) => () => {
     setCurrentChannel({ id });
   };
@@ -57,8 +60,8 @@ const Channels = ({
               {name}
             </Button>
             <DropdownButton as={ButtonGroup} variant={id === currentChannelId ? 'primary' : 'light'} title="" id="bg-nested-dropdown">
-              <Dropdown.Item onClick={handleRemoveChannel(id)}>Remove</Dropdown.Item>
-              <Dropdown.Item onClick={handleRenameChannel(id)}>Rename</Dropdown.Item>
+              <Dropdown.Item onClick={handleRemoveChannel(id)}>{t('elements.removeButton')}</Dropdown.Item>
+              <Dropdown.Item onClick={handleRenameChannel(id)}>{t('elements.renameButton')}</Dropdown.Item>
             </DropdownButton>
           </ButtonGroup>
         </li>
@@ -82,7 +85,7 @@ const Channels = ({
   return (
     <div className="col-3 border-right">
       <div className="d-flex mb-2">
-        <span>Channels</span>
+        <span>{t('elements.channelList')}</span>
         <button type="button" className="ml-auto p-0 btn btn-link" onClick={handleAddChannel}>+</button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">

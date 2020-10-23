@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import { actions, asyncActions } from '../../slices';
@@ -23,6 +24,7 @@ const actionCreators = {
 const RenameChannelModal = ({
   show, id, name, showModal, renameChannel,
 }) => {
+  const { t } = useTranslation();
   const handleClose = () => showModal({ show: false });
 
   const inputRef = useRef();
@@ -45,7 +47,7 @@ const RenameChannelModal = ({
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Rename channel</Modal.Title>
+          <Modal.Title>{t('modals.renameChannel.header')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -61,7 +63,7 @@ const RenameChannelModal = ({
             }) => (
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
-                  <Form.Label>Channel name</Form.Label>
+                  <Form.Label>{t('modals.renameChannel.body')}</Form.Label>
                   <Form.Control
                     ref={inputRef}
                     type="text"
@@ -71,10 +73,10 @@ const RenameChannelModal = ({
                   />
                 </Form.Group>
                 <Button type="submit" variant="outline-warning">
-                  Rename channel
+                  {t('modals.renameChannel.confirm')}
                 </Button>
                 <Button variant="outline-secondary" onClick={handleClose}>
-                  Cancel
+                  {t('modals.renameChannel.cancel')}
                 </Button>
               </Form>
             )}

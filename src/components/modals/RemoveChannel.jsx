@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
 
 const mapStateToProps = (state) => {
@@ -20,6 +21,8 @@ const actionCreators = {
 const RemoveChannelModal = ({
   show, id, showModal, setModalExtra, removeChannel,
 }) => {
+  const { t } = useTranslation();
+
   const handleClose = () => showModal({ show: false });
 
   const submitRemoval = async () => {
@@ -36,15 +39,15 @@ const RemoveChannelModal = ({
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Remove channel</Modal.Title>
+          <Modal.Title>{t('modals.removeChannel.header')}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to remove channel?</Modal.Body>
+        <Modal.Body>{t('modals.removeChannel.body')}</Modal.Body>
         <Modal.Footer>
           <Button variant="outline-danger" onClick={submitRemoval}>
-            Remove
+            {t('modals.removeChannel.confirm')}
           </Button>
           <Button variant="outline-secondary" onClick={handleClose}>
-            Cancel
+            {t('modals.removeChannel.cancel')}
           </Button>
         </Modal.Footer>
       </Modal>

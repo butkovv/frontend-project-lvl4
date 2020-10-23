@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
 
 const mapStateToProps = (state) => {
@@ -19,6 +20,8 @@ const actionCreators = {
 const NewChannelModal = ({
   show, showModal, createChannel,
 }) => {
+  const { t } = useTranslation();
+
   const handleClose = () => showModal({ show: false });
 
   const inputRef = useRef();
@@ -41,7 +44,7 @@ const NewChannelModal = ({
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Create new channel</Modal.Title>
+          <Modal.Title>{t('modals.addChannel.header')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -57,7 +60,7 @@ const NewChannelModal = ({
             }) => (
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
-                  <Form.Label>Enter channel name</Form.Label>
+                  <Form.Label>{t('modals.addChannel.body')}</Form.Label>
                   <Form.Control
                     type="text"
                     name="channelName"
@@ -67,10 +70,10 @@ const NewChannelModal = ({
                   />
                 </Form.Group>
                 <Button type="submit" variant="outline-success">
-                  Create channel
+                  {t('modals.addChannel.confim')}
                 </Button>
                 <Button variant="outline-secondary" onClick={handleClose}>
-                  Cancel
+                  {t('modals.addChannel.cancel')}
                 </Button>
               </Form>
             )}

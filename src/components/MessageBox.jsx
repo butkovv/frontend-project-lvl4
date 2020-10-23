@@ -7,6 +7,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
 import UserNameContext from '../context.jsx';
 
@@ -16,6 +17,8 @@ const mapStateToProps = (state) => {
 };
 
 const MessageBox = ({ currentChannelId }) => {
+  const { t } = useTranslation();
+
   const nickname = useContext(UserNameContext);
 
   const submitMessage = (value, { setSubmitting, resetForm }) => {
@@ -59,14 +62,14 @@ const MessageBox = ({ currentChannelId }) => {
           <Form noValidate onSubmit={handleSubmit}>
             <InputGroup className="mb-3">
               <FormControl
-                placeholder="Message"
+                placeholder={t('elements.inputText')}
                 type="text"
                 name="message"
                 value={values.message}
                 onChange={handleChange}
               />
               <InputGroup.Append>
-                <Button variant="primary" type="submit">Send</Button>
+                <Button variant="primary" type="submit">{t('elements.sendButton')}</Button>
               </InputGroup.Append>
             </InputGroup>
           </Form>
