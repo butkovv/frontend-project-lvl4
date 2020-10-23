@@ -6,13 +6,12 @@ import { render } from 'react-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import faker from 'faker';
-import socket from './socket';
 import App from './components/App.jsx';
 import '../assets/application.scss';
 import reducers from './slices';
 import UserNameContext from './context.jsx';
 
-export default (gon) => {
+export default (gon, socket) => {
   if (!Cookies.get('name')) {
     Cookies.set('name', faker.internet.userName());
   }

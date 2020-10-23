@@ -84,11 +84,11 @@ const Channels = ({
       <div className="d-flex mb-2">
         <span>Channels</span>
         <button type="button" className="ml-auto p-0 btn btn-link" onClick={handleAddChannel}>+</button>
-        {modalType && <ModalWindow />}
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
         {channels && channels.map(renderButton)}
       </ul>
+      {modalType && <ModalWindow />}
     </div>
   );
 };

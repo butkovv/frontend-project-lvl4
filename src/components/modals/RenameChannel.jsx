@@ -21,21 +21,20 @@ const actionCreators = {
 };
 
 const RenameChannelModal = ({
-  show, id, name, showModal, setModalExtra, renameChannel,
+  show, id, name, showModal, renameChannel,
 }) => {
   const handleClose = () => showModal({ show: false });
 
   const inputRef = useRef();
-
   useEffect(() => {
+    inputRef.current.focus();
     inputRef.current.select();
-  }, []);
+  });
 
-  const submitNewChannelName = async (value, { setSubmitting }) => {
+  const submitNewChannelName = async (values, { setSubmitting }) => {
     try {
-      await renameChannel({ id, name });
+      await renameChannel({ id, name: values.name });
       setSubmitting(false);
-      setModalExtra({ channelId: null });
       showModal({ show: false });
     } catch (e) {
       console.log(e);
@@ -64,11 +63,11 @@ const RenameChannelModal = ({
                 <Form.Group>
                   <Form.Label>Channel name</Form.Label>
                   <Form.Control
+                    ref={inputRef}
                     type="text"
                     name="name"
                     value={values.name}
                     onChange={handleChange}
-                    ref={inputRef}
                   />
                 </Form.Group>
                 <Button type="submit" variant="outline-warning">

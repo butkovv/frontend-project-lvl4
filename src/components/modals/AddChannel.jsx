@@ -16,11 +16,12 @@ const actionCreators = {
   createChannel: asyncActions.createChannel,
 };
 
-const NewChannelModal = ({ show, showModal, createChannel }) => {
+const NewChannelModal = ({
+  show, showModal, createChannel,
+}) => {
   const handleClose = () => showModal({ show: false });
 
   const inputRef = useRef();
-
   useEffect(() => {
     inputRef.current.focus();
   });
