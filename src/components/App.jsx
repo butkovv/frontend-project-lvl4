@@ -7,6 +7,7 @@ import MessageBox from './MessageBox.jsx';
 const App = () => {
   React.useState({
     rollbar: new Rollbar({
+      enabled: process.env.NODE_ENV === 'production',
       accessToken: '2fb1743bfd9645ef9fb59b0c29e54db3',
       captureUncaught: true,
       captureUnhandledRejections: true,

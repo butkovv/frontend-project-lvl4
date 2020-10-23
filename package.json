@@ -19,9 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
+    "url": "git@github.com:butkovv/frontend-project-lvl4.git"
   },
-  "author": "Kirill Mokevnin",
+  "author": "Vyacheslav Butko",
   "license": "ISC",
   "homepage": "",
   "dependencies": {

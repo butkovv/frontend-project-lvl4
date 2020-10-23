@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -9,7 +9,8 @@ import { actions, asyncActions } from '../../slices';
 const mapStateToProps = (state) => {
   const { modal: { show, extra } } = state;
   const id = extra.channelId;
-  return { show, id };
+  const { name } = state.channels.items.find((ch) => ch.id === id);
+  return { show, id, name };
 };
 
 const actionCreators = {
@@ -20,12 +21,17 @@ const actionCreators = {
 };
 
 const RenameChannelModal = ({
-  show, id, showModal, setModalExtra, renameChannel,
+  show, id, name, showModal, setModalExtra, renameChannel,
 }) => {
   const handleClose = () => showModal({ show: false });
 
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.select();
+  }, []);
+
   const submitNewChannelName = async (value, { setSubmitting }) => {
-    const name = value.newName;
     try {
       await renameChannel({ id, name });
       setSubmitting(false);
@@ -46,7 +52,7 @@ const RenameChannelModal = ({
           <Formik
             onSubmit={submitNewChannelName}
             initialValues={{
-              newName: '',
+              name,
             }}
           >
             {({
@@ -59,9 +65,10 @@ const RenameChannelModal = ({
                   <Form.Label>Channel name</Form.Label>
                   <Form.Control
                     type="text"
-                    name="newName"
-                    value={values.newName}
+                    name="name"
+                    value={values.name}
                     onChange={handleChange}
+                    ref={inputRef}
                   />
                 </Form.Group>
                 <Button type="submit" variant="outline-warning">

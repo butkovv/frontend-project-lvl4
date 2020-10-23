@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -18,6 +18,12 @@ const actionCreators = {
 
 const NewChannelModal = ({ show, showModal, createChannel }) => {
   const handleClose = () => showModal({ show: false });
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
   const submitNewChannel = async (value, { setSubmitting }) => {
     const name = value.channelName;
@@ -56,6 +62,7 @@ const NewChannelModal = ({ show, showModal, createChannel }) => {
                     name="channelName"
                     value={values.channelName}
                     onChange={handleChange}
+                    ref={inputRef}
                   />
                 </Form.Group>
                 <Button type="submit" variant="outline-success">

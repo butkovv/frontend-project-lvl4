@@ -34,8 +34,7 @@ const MessageBox = ({ currentChannelId }) => {
       },
     };
     axios.post(routes.channelMessagesPath(currentChannelId), messageData)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         setSubmitting(false);
         resetForm();
       })
