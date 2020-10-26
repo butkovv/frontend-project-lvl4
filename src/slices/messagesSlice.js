@@ -5,8 +5,8 @@ import routes from '../routes';
 
 const addMessage = createAsyncThunk(
   'messages/addMessage',
-  async ({ channelId, username, message }) => {
-    const data = { attributes: { message, username } };
+  async ({ channelId, nickname, message }) => {
+    const data = { data: { attributes: { body: message, nickname } } };
     const url = routes.channelMessagesPath(channelId);
     await axios.post(url, data);
   },

@@ -5,45 +5,38 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
-import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
-import routes from '../routes.js';
 import UserNameContext from '../context.jsx';
+import { asyncActions } from '../slices';
 
 const mapStateToProps = (state) => {
   const { channels: { currentChannelId } } = state;
   return { currentChannelId };
 };
 
-const MessageBox = ({ currentChannelId }) => {
+const actionCreators = {
+  addMessage: asyncActions.addMessage,
+};
+
+const MessageBox = ({ currentChannelId, addMessage }) => {
   const { t } = useTranslation();
 
   const nickname = useContext(UserNameContext);
 
-  const submitMessage = (value, { setSubmitting, resetForm }) => {
+  const submitMessage = async (value, { setSubmitting, resetForm }) => {
     if (value.message.length === 0) {
       setSubmitting(false);
       resetForm();
       return;
     }
-    const messageData = {
-      data: {
-        attributes: {
-          body: value.message,
-          id: _.uniqueId(),
-          nickname,
-        },
-      },
+    const data = {
+      message: value.message,
+      channelId: currentChannelId,
+      nickname,
     };
-    axios.post(routes.channelMessagesPath(currentChannelId), messageData)
-      .then(() => {
-        setSubmitting(false);
-        resetForm();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    await addMessage(data);
+    resetForm();
+    setSubmitting(false);
   };
 
   return (
@@ -55,6 +48,7 @@ const MessageBox = ({ currentChannelId }) => {
         }}
       >
         {({
+          isSubmitting,
           handleSubmit,
           handleChange,
           values,
@@ -69,7 +63,7 @@ const MessageBox = ({ currentChannelId }) => {
                 onChange={handleChange}
               />
               <InputGroup.Append>
-                <Button variant="primary" type="submit">{t('elements.sendButton')}</Button>
+                <Button variant="primary" type="submit" disabled={isSubmitting}>{t('elements.sendButton')}</Button>
               </InputGroup.Append>
             </InputGroup>
           </Form>
@@ -78,4 +72,4 @@ const MessageBox = ({ currentChannelId }) => {
     </div>
   );
 };
-export default connect(mapStateToProps, null)(MessageBox);
+export default connect(mapStateToProps, actionCreators)(MessageBox);

@@ -59,7 +59,7 @@ const Channels = ({
             >
               {name}
             </Button>
-            <DropdownButton as={ButtonGroup} variant={id === currentChannelId ? 'primary' : 'light'} title="" id="bg-nested-dropdown">
+            <DropdownButton as={ButtonGroup} variant={id === currentChannelId ? 'primary' : 'light'} id="bg-nested-dropdown">
               <Dropdown.Item onClick={handleRemoveChannel(id)}>{t('elements.removeButton')}</Dropdown.Item>
               <Dropdown.Item onClick={handleRenameChannel(id)}>{t('elements.renameButton')}</Dropdown.Item>
             </DropdownButton>
