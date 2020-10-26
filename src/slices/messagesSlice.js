@@ -24,10 +24,6 @@ const slice = createSlice({
     },
   },
   extraReducers: {
-    /* [addMessage.fulfilled]() { },
-    [addMessage.rejected]() {
-      throw new Error();
-    }, */
     [channelsActions.removeChannelSuccess]:
     (state, { payload: { id } }) => state.filter((message) => message.channelId !== id),
   },

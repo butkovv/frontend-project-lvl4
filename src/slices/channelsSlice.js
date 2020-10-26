@@ -12,7 +12,7 @@ const createChannel = createAsyncThunk(
       },
     };
     const url = routes.channelsPath();
-    axios.post(url, data);
+    await axios.post(url, data);
   },
 );
 
@@ -61,20 +61,6 @@ const slice = createSlice({
       state.items = state.items.filter((channel) => channel.id !== payload.id);
       state.currentChannelId = state.items[0].id;
     },
-    /* extraReducers: {
-      [createChannel.fulfilled]() {},
-      [createChannel.rejected]() {
-        throw new Error();
-      },
-      [removeChannel.fulfilled]() {},
-      [removeChannel.rejected]() {
-        throw new Error();
-      },
-      [renameChannel.fulfilled]() {},
-      [renameChannel.rejected]() {
-        throw new Error();
-      },
-    }, */
   },
 });
 
