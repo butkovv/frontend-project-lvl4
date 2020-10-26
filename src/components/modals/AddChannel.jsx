@@ -70,7 +70,7 @@ const NewChannelModal = ({
                   />
                 </Form.Group>
                 <Button type="submit" variant="outline-success">
-                  {t('modals.addChannel.confim')}
+                  {t('modals.addChannel.confirm')}
                 </Button>
                 <Button variant="outline-secondary" onClick={handleClose}>
                   {t('modals.addChannel.cancel')}
