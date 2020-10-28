@@ -8,10 +8,10 @@ import Cookies from 'js-cookie';
 import faker from 'faker';
 import App from './components/App.jsx';
 import '../assets/application.scss';
-import reducers from './slices';
+import reducers, { actions } from './slices';
 import UserNameContext from './context.jsx';
 
-export default (gon, connect) => {
+export default (gon, connection) => {
   if (!Cookies.get('name')) {
     Cookies.set('name', faker.internet.userName());
   }
@@ -29,7 +29,19 @@ export default (gon, connect) => {
     reducer: reducers,
     preloadedState,
   });
-  connect(store);
+
+  connection.on('newMessage', (msg) => {
+    store.dispatch(actions.addMessageSuccess(msg.data.attributes));
+  });
+  connection.on('newChannel', (channel) => {
+    store.dispatch(actions.createChannelSuccess(channel.data.attributes));
+  });
+  connection.on('removeChannel', (response) => {
+    store.dispatch(actions.removeChannelSuccess(response.data));
+  });
+  connection.on('renameChannel', (response) => {
+    store.dispatch(actions.renameChannelSuccess(response.data.attributes));
+  });
 
   render(
     <Provider store={store}>
