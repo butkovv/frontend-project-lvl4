@@ -11,7 +11,7 @@ import '../assets/application.scss';
 import reducers from './slices';
 import UserNameContext from './context.jsx';
 
-export default (gon, socket) => {
+export default (gon, connect) => {
   if (!Cookies.get('name')) {
     Cookies.set('name', faker.internet.userName());
   }
@@ -29,7 +29,7 @@ export default (gon, socket) => {
     reducer: reducers,
     preloadedState,
   });
-  socket(store);
+  connect(store);
 
   render(
     <Provider store={store}>
