@@ -23,7 +23,7 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
 
   const nickname = useContext(UserNameContext);
 
-  const submitMessage = async (value, { setSubmitting, resetForm }) => {
+  const submitMessage = async (value, { setSubmitting, resetForm, setErrors }) => {
     if (value.message.length === 0) {
       setSubmitting(false);
       resetForm();
@@ -34,9 +34,13 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
       channelId: currentChannelId,
       nickname,
     };
-    await addMessage(data);
-    resetForm();
-    setSubmitting(false);
+    try {
+      await addMessage(data);
+      resetForm();
+      setSubmitting(false);
+    } catch (e) {
+      setErrors({ error: t('errors.networkError') });
+    }
   };
 
   return (
@@ -52,8 +56,12 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
           handleSubmit,
           handleChange,
           values,
+          errors,
         }) => (
           <Form noValidate onSubmit={handleSubmit}>
+            <h6 className="text-danger">
+              {errors.error}
+            </h6>
             <InputGroup className="mb-3">
               <FormControl
                 placeholder={t('elements.inputText')}

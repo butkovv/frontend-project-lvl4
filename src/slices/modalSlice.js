@@ -9,14 +9,10 @@ const slice = createSlice({
     extra: null,
   },
   reducers: {
-    setModalType(state, { payload }) {
-      state.type = payload.type;
-    },
     showModal(state, { payload }) {
+      state.type = payload.type;
       state.show = payload.show;
-    },
-    setModalExtra(state, { payload }) {
-      state.extra = payload;
+      state.extra = { channelId: payload.channelId };
     },
   },
 });

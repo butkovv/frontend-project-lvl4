@@ -29,14 +29,14 @@ const NewChannelModal = ({
     inputRef.current.focus();
   });
 
-  const submitNewChannel = async (value, { setSubmitting }) => {
+  const submitNewChannel = async (value, { setSubmitting, setErrors }) => {
     const name = value.channelName;
     try {
       await createChannel({ name });
       setSubmitting(false);
       showModal({ show: false });
     } catch (e) {
-      console.log(e);
+      setErrors({ error: t('errors.networkError') });
     }
   };
 
@@ -46,19 +46,20 @@ const NewChannelModal = ({
         <Modal.Header closeButton>
           <Modal.Title>{t('modals.addChannel.header')}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Formik
-            onSubmit={submitNewChannel}
-            initialValues={{
-              channelName: '',
-            }}
-          >
-            {({
-              handleSubmit,
-              handleChange,
-              values,
-            }) => (
-              <Form onSubmit={handleSubmit}>
+        <Formik
+          onSubmit={submitNewChannel}
+          initialValues={{
+            channelName: '',
+          }}
+        >
+          {({
+            handleSubmit,
+            handleChange,
+            values,
+            errors,
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <Modal.Body>
                 <Form.Group>
                   <Form.Label>{t('modals.addChannel.body')}</Form.Label>
                   <Form.Control
@@ -69,17 +70,21 @@ const NewChannelModal = ({
                     ref={inputRef}
                   />
                 </Form.Group>
+                <h6 className="text-danger">
+                  {errors.error}
+                </h6>
+              </Modal.Body>
+              <Modal.Footer>
                 <Button type="submit" variant="outline-success">
                   {t('modals.addChannel.confirm')}
                 </Button>
                 <Button variant="outline-secondary" onClick={handleClose}>
                   {t('modals.addChannel.cancel')}
                 </Button>
-              </Form>
-            )}
-          </Formik>
-        </Modal.Body>
-        <Modal.Footer />
+              </Modal.Footer>
+            </Form>
+          )}
+        </Formik>
       </Modal>
     </>
   );

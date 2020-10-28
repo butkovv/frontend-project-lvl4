@@ -16,8 +16,6 @@ const mapStateToProps = (state) => {
 
 const actionCreators = {
   showModal: actions.showModal,
-  setModalType: actions.setModalType,
-  setModalExtra: actions.setModalExtra,
   renameChannel: asyncActions.renameChannel,
 };
 
@@ -33,13 +31,13 @@ const RenameChannelModal = ({
     inputRef.current.select();
   });
 
-  const submitNewChannelName = async (values, { setSubmitting }) => {
+  const submitNewChannelName = async (values, { setSubmitting, setErrors }) => {
     try {
       await renameChannel({ id, name: values.name });
       setSubmitting(false);
       showModal({ show: false });
     } catch (e) {
-      console.log(e);
+      setErrors({ error: t('errors.networkError') });
     }
   };
 
@@ -49,19 +47,21 @@ const RenameChannelModal = ({
         <Modal.Header closeButton>
           <Modal.Title>{t('modals.renameChannel.header')}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Formik
-            onSubmit={submitNewChannelName}
-            initialValues={{
-              name,
-            }}
-          >
-            {({
-              handleSubmit,
-              handleChange,
-              values,
-            }) => (
-              <Form onSubmit={handleSubmit}>
+        <Formik
+          onSubmit={submitNewChannelName}
+          initialValues={{
+            name,
+          }}
+        >
+          {({
+            isSubmitting,
+            handleSubmit,
+            handleChange,
+            values,
+            errors,
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <Modal.Body>
                 <Form.Group>
                   <Form.Label>{t('modals.renameChannel.body')}</Form.Label>
                   <Form.Control
@@ -72,17 +72,21 @@ const RenameChannelModal = ({
                     onChange={handleChange}
                   />
                 </Form.Group>
-                <Button type="submit" variant="outline-warning">
+                <h6 className="text-danger">
+                  {errors.error}
+                </h6>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button type="submit" variant="outline-warning" disabled={isSubmitting}>
                   {t('modals.renameChannel.confirm')}
                 </Button>
-                <Button variant="outline-secondary" onClick={handleClose}>
+                <Button variant="outline-secondary" onClick={handleClose} disabled={isSubmitting}>
                   {t('modals.renameChannel.cancel')}
                 </Button>
-              </Form>
-            )}
-          </Formik>
-        </Modal.Body>
-        <Modal.Footer />
+              </Modal.Footer>
+            </Form>
+          )}
+        </Formik>
       </Modal>
     </>
   );

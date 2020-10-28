@@ -1,6 +1,8 @@
 import React from 'react';
+import { Formik } from 'formik';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
@@ -13,25 +15,23 @@ const mapStateToProps = (state) => {
 
 const actionCreators = {
   showModal: actions.showModal,
-  setModalType: actions.setModalType,
-  setModalExtra: actions.setModalExtra,
   removeChannel: asyncActions.removeChannel,
 };
 
 const RemoveChannelModal = ({
-  show, id, showModal, setModalExtra, removeChannel,
+  show, id, showModal, removeChannel,
 }) => {
   const { t } = useTranslation();
 
   const handleClose = () => showModal({ show: false });
 
-  const submitRemoval = async () => {
+  const submitRemoval = async (values, { setSubmitting, setErrors }) => {
     try {
       await removeChannel({ id });
+      setSubmitting(false);
       showModal({ show: false });
-      setModalExtra({ channelId: null });
     } catch (e) {
-      console.log(e);
+      setErrors({ error: t('errors.networkError') });
     }
   };
 
@@ -41,15 +41,31 @@ const RemoveChannelModal = ({
         <Modal.Header closeButton>
           <Modal.Title>{t('modals.removeChannel.header')}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{t('modals.removeChannel.body')}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={submitRemoval}>
-            {t('modals.removeChannel.confirm')}
-          </Button>
-          <Button variant="outline-secondary" onClick={handleClose}>
-            {t('modals.removeChannel.cancel')}
-          </Button>
-        </Modal.Footer>
+        <Formik
+          onSubmit={submitRemoval}
+          initialValues={{
+            name: '',
+          }}
+        >
+          {({ isSubmitting, errors, handleSubmit }) => (
+            <Form onSubmit={handleSubmit}>
+              <Modal.Body>
+                {t('modals.removeChannel.body')}
+                <h6 className="text-danger">
+                  {errors.error}
+                </h6>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button type="submit" variant="outline-danger" disabled={isSubmitting}>
+                  {t('modals.removeChannel.confirm')}
+                </Button>
+                <Button variant="outline-secondary" onClick={handleClose}>
+                  {t('modals.removeChannel.cancel')}
+                </Button>
+              </Modal.Footer>
+            </Form>
+          )}
+        </Formik>
       </Modal>
     </>
   );

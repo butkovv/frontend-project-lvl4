@@ -17,12 +17,10 @@ const mapStateToProps = (state) => {
 
 const actionCreators = {
   setCurrentChannel: actions.setCurrentChannel,
-  setModalType: actions.setModalType,
-  setModalExtra: actions.setModalExtra,
   showModal: actions.showModal,
 };
 const Channels = ({
-  setCurrentChannel, setModalType, setModalExtra, showModal, currentChannelId, channels, modalType,
+  setCurrentChannel, showModal, currentChannelId, channels, modalType,
 }) => {
   const { t } = useTranslation();
 
@@ -31,20 +29,15 @@ const Channels = ({
   };
 
   const handleAddChannel = () => {
-    setModalType({ type: 'AddChannel' });
-    showModal({ show: true });
+    showModal({ show: true, type: 'AddChannel' });
   };
 
   const handleRemoveChannel = (channelId) => () => {
-    setModalType({ type: 'RemoveChannel' });
-    setModalExtra({ channelId });
-    showModal({ show: true });
+    showModal({ show: true, type: 'RemoveChannel', channelId });
   };
 
   const handleRenameChannel = (channelId) => () => {
-    setModalType({ type: 'RenameChannel' });
-    setModalExtra({ channelId });
-    showModal({ show: true });
+    showModal({ show: true, type: 'RenameChannel', channelId });
   };
 
   const renderButton = ({ id, name, removable }) => {
@@ -59,9 +52,9 @@ const Channels = ({
             >
               {name}
             </Button>
-            <DropdownButton as={ButtonGroup} variant={id === currentChannelId ? 'primary' : 'light'} id="bg-nested-dropdown">
-              <Dropdown.Item onClick={handleRemoveChannel(id)}>{t('elements.removeButton')}</Dropdown.Item>
+            <DropdownButton as={ButtonGroup} variant={id === currentChannelId ? 'primary' : 'light'} id="bg-nested-dropdown" title="">
               <Dropdown.Item onClick={handleRenameChannel(id)}>{t('elements.renameButton')}</Dropdown.Item>
+              <Dropdown.Item onClick={handleRemoveChannel(id)}>{t('elements.removeButton')}</Dropdown.Item>
             </DropdownButton>
           </ButtonGroup>
         </li>

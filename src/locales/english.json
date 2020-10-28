@@ -1,4 +1,7 @@
 {
+  "errors": {
+    "networkError": "Network error"
+  },
   "modals": {
     "addChannel": {
       "header": "Create a new channel",
@@ -14,7 +17,7 @@
     },
     "removeChannel": {
       "header": "Remove channel",
-      "body": "Are you sure you want to remove channel? This action cannot be undone!",
+      "body": "Are you sure you want to remove channel? This action cannot be undone.",
       "confirm": "Remove",
       "cancel": "Cancel"
     }
