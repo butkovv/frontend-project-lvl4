@@ -1,5 +1,4 @@
 import React from 'react';
-// import Rollbar from 'rollbar';
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import MessageBox from './MessageBox.jsx';

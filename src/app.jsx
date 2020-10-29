@@ -6,10 +6,20 @@ import { render } from 'react-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import faker from 'faker';
+import Rollbar from 'rollbar';
 import App from './components/App.jsx';
 import '../assets/application.scss';
 import reducers, { actions } from './slices';
 import UserNameContext from './context.jsx';
+
+// eslint-disable-next-line no-unused-vars
+const rollbar = new Rollbar({
+  enabled: process.env.NODE_ENV === 'production',
+  accessToken: '2fb1743bfd9645ef9fb59b0c29e54db3',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+  async: false,
+});
 
 export default (gon, connection) => {
   if (!Cookies.get('name')) {
