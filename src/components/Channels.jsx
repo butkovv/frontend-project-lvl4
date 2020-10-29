@@ -17,10 +17,10 @@ const mapStateToProps = (state) => {
 
 const actionCreators = {
   setCurrentChannel: actions.setCurrentChannel,
-  showModal: actions.showModal,
+  toggleModal: actions.toggleModal,
 };
 const Channels = ({
-  setCurrentChannel, showModal, currentChannelId, channels, modalType,
+  setCurrentChannel, toggleModal, currentChannelId, channels, modalType,
 }) => {
   const { t } = useTranslation();
 
@@ -29,15 +29,15 @@ const Channels = ({
   };
 
   const handleAddChannel = () => {
-    showModal({ show: true, type: 'AddChannel' });
+    toggleModal({ show: true, type: 'AddChannel' });
   };
 
   const handleRemoveChannel = (channelId) => () => {
-    showModal({ show: true, type: 'RemoveChannel', channelId });
+    toggleModal({ show: true, type: 'RemoveChannel', channelId });
   };
 
   const handleRenameChannel = (channelId) => () => {
-    showModal({ show: true, type: 'RenameChannel', channelId });
+    toggleModal({ show: true, type: 'RenameChannel', channelId });
   };
 
   const renderButton = ({ id, name, removable }) => {

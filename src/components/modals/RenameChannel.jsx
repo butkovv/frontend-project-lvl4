@@ -15,15 +15,15 @@ const mapStateToProps = (state) => {
 };
 
 const actionCreators = {
-  showModal: actions.showModal,
+  toggleModal: actions.toggleModal,
   renameChannel: asyncActions.renameChannel,
 };
 
 const RenameChannelModal = ({
-  show, id, name, showModal, renameChannel,
+  show, id, name, toggleModal, renameChannel,
 }) => {
   const { t } = useTranslation();
-  const handleClose = () => showModal({ show: false });
+  const handleClose = () => toggleModal({ show: false });
 
   const inputRef = useRef();
   useEffect(() => {
@@ -35,7 +35,7 @@ const RenameChannelModal = ({
     try {
       await renameChannel({ id, name: values.name });
       setSubmitting(false);
-      showModal({ show: false });
+      toggleModal({ show: false });
     } catch (e) {
       setErrors({ error: t('errors.networkError') });
     }

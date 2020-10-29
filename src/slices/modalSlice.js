@@ -9,7 +9,7 @@ const slice = createSlice({
     extra: null,
   },
   reducers: {
-    showModal(state, { payload }) {
+    toggleModal(state, { payload }) {
       state.type = payload.type;
       state.show = payload.show;
       state.extra = { channelId: payload.channelId };

@@ -14,22 +14,22 @@ const mapStateToProps = (state) => {
 };
 
 const actionCreators = {
-  showModal: actions.showModal,
+  toggleModal: actions.toggleModal,
   removeChannel: asyncActions.removeChannel,
 };
 
 const RemoveChannelModal = ({
-  show, id, showModal, removeChannel,
+  show, id, toggleModal, removeChannel,
 }) => {
   const { t } = useTranslation();
 
-  const handleClose = () => showModal({ show: false });
+  const handleClose = () => toggleModal({ show: false });
 
   const submitRemoval = async (values, { setSubmitting, setErrors }) => {
     try {
       await removeChannel({ id });
       setSubmitting(false);
-      showModal({ show: false });
+      toggleModal({ show: false });
     } catch (e) {
       setErrors({ error: t('errors.networkError') });
     }
