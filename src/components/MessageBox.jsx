@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -34,13 +35,13 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
       channelId: currentChannelId,
       nickname,
     };
-    try {
-      await addMessage(data);
-      resetForm();
-      setSubmitting(false);
-    } catch (e) {
-      setErrors({ error: t('errors.networkError') });
-    }
+    addMessage(data)
+      .then(unwrapResult)
+      .then(() => {
+        resetForm();
+        setSubmitting(false);
+      })
+      .catch((error) => setErrors({ error: error.message }));
   };
 
   return (

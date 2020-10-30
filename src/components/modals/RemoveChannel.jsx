@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
 
@@ -26,13 +27,13 @@ const RemoveChannelModal = ({
   const handleClose = () => toggleModal({ show: false });
 
   const submitRemoval = async (values, { setSubmitting, setErrors }) => {
-    try {
-      await removeChannel({ id });
-      setSubmitting(false);
-      toggleModal({ show: false });
-    } catch (e) {
-      setErrors({ error: t('errors.networkError') });
-    }
+    removeChannel({ id })
+      .then(unwrapResult)
+      .then(() => {
+        setSubmitting(false);
+        toggleModal({ show: false });
+      })
+      .catch((error) => setErrors({ error: error.message }));
   };
 
   return (

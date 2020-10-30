@@ -1,7 +1,4 @@
 {
-  "errors": {
-    "networkError": "Network error"
-  },
   "modals": {
     "addChannel": {
       "header": "Create a new channel",

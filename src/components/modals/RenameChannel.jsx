@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
 import { actions, asyncActions } from '../../slices';
 
@@ -32,13 +33,13 @@ const RenameChannelModal = ({
   });
 
   const submitNewChannelName = async (values, { setSubmitting, setErrors }) => {
-    try {
-      await renameChannel({ id, name: values.name });
-      setSubmitting(false);
-      toggleModal({ show: false });
-    } catch (e) {
-      setErrors({ error: t('errors.networkError') });
-    }
+    renameChannel({ id, name: values.name })
+      .then(unwrapResult)
+      .then(() => {
+        setSubmitting(false);
+        toggleModal({ show: false });
+      })
+      .catch((error) => setErrors({ error: error.message }));
   };
 
   return (
@@ -49,9 +50,7 @@ const RenameChannelModal = ({
         </Modal.Header>
         <Formik
           onSubmit={submitNewChannelName}
-          initialValues={{
-            name,
-          }}
+          initialValues={{ name }}
         >
           {({
             isSubmitting,

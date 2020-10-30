@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
@@ -31,13 +32,13 @@ const NewChannelModal = ({
 
   const submitNewChannel = async (value, { setSubmitting, setErrors }) => {
     const name = value.channelName;
-    try {
-      await createChannel({ name });
-      setSubmitting(false);
-      toggleModal({ show: false });
-    } catch (e) {
-      setErrors({ error: t('errors.networkError') });
-    }
+    createChannel({ name })
+      .then(unwrapResult)
+      .then(() => {
+        setSubmitting(false);
+        toggleModal({ show: false });
+      })
+      .catch((error) => setErrors({ error: error.message }));
   };
 
   return (
