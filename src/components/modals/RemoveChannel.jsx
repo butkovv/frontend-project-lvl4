@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import { connect } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
@@ -52,9 +53,11 @@ const RemoveChannelModal = ({
             <Form onSubmit={handleSubmit}>
               <Modal.Body>
                 {t('modals.removeChannel.body')}
-                <h6 className="text-danger">
+                {errors.error && (
+                <Alert variant="danger">
                   {errors.error}
-                </h6>
+                </Alert>
+                )}
               </Modal.Body>
               <Modal.Footer>
                 <Button type="submit" variant="outline-danger" disabled={isSubmitting}>

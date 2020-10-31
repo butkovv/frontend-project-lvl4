@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import { useTranslation } from 'react-i18next';
 import UserNameContext from '../context.jsx';
 import { asyncActions } from '../slices';
@@ -60,9 +61,11 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
           errors,
         }) => (
           <Form noValidate onSubmit={handleSubmit}>
-            <h6 className="text-danger">
+            {errors.error && (
+            <Alert variant="danger">
               {errors.error}
-            </h6>
+            </Alert>
+            )}
             <InputGroup className="mb-3">
               <FormControl
                 placeholder={t('elements.inputText')}

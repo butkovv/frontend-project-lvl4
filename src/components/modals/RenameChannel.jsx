@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -71,9 +72,11 @@ const RenameChannelModal = ({
                     onChange={handleChange}
                   />
                 </Form.Group>
-                <h6 className="text-danger">
+                {errors.error && (
+                <Alert variant="danger">
                   {errors.error}
-                </h6>
+                </Alert>
+                )}
               </Modal.Body>
               <Modal.Footer>
                 <Button type="submit" variant="outline-warning" disabled={isSubmitting}>
