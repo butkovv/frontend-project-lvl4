@@ -1,4 +1,7 @@
 {
+  "errors": {
+    "required": "Required field"
+  },
   "modals": {
     "addChannel": {
       "header": "Create a new channel",

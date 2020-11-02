@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -43,6 +44,10 @@ const RenameChannelModal = ({
       .catch((error) => setErrors({ error: error.message }));
   };
 
+  const schema = Yup.object().shape({
+    name: Yup.string().required(t('errors.required')),
+  });
+
   return (
     <>
       <Modal show={show} onHide={handleClose}>
@@ -52,6 +57,7 @@ const RenameChannelModal = ({
         <Formik
           onSubmit={submitNewChannelName}
           initialValues={{ name }}
+          validationSchema={schema}
         >
           {({
             isSubmitting,
@@ -70,7 +76,9 @@ const RenameChannelModal = ({
                     name="name"
                     value={values.name}
                     onChange={handleChange}
+                    isInvalid={!!errors.name}
                   />
+                  <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                 </Form.Group>
                 {errors.error && (
                 <Alert variant="danger">

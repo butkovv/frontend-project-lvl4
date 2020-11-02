@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
@@ -42,6 +43,10 @@ const NewChannelModal = ({
       .catch((error) => setErrors({ error: error.message }));
   };
 
+  const schema = Yup.object().shape({
+    channelName: Yup.string().required(t('errors.required')),
+  });
+
   return (
     <>
       <Modal show={show} onHide={handleClose}>
@@ -53,6 +58,7 @@ const NewChannelModal = ({
           initialValues={{
             channelName: '',
           }}
+          validationSchema={schema}
         >
           {({
             handleSubmit,
@@ -70,7 +76,9 @@ const NewChannelModal = ({
                     value={values.channelName}
                     onChange={handleChange}
                     ref={inputRef}
+                    isInvalid={!!errors.channelName}
                   />
+                  <Form.Control.Feedback type="invalid">{errors.channelName}</Form.Control.Feedback>
                 </Form.Group>
                 {errors.error && (
                 <Alert variant="danger">

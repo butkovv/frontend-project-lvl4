@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
@@ -26,11 +27,6 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
   const nickname = useContext(UserNameContext);
 
   const submitMessage = async (value, { setSubmitting, resetForm, setErrors }) => {
-    if (value.message.length === 0) {
-      setSubmitting(false);
-      resetForm();
-      return;
-    }
     const data = {
       message: value.message,
       channelId: currentChannelId,
@@ -45,6 +41,10 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
       .catch((error) => setErrors({ error: error.message }));
   };
 
+  const schema = Yup.object().shape({
+    message: Yup.string().required(t('errors.required')),
+  });
+
   return (
     <div className="mt-auto">
       <Formik
@@ -52,6 +52,7 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
         initialValues={{
           message: '',
         }}
+        validationSchema={schema}
       >
         {({
           isSubmitting,
@@ -73,7 +74,9 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
                 name="message"
                 value={values.message}
                 onChange={handleChange}
+                isInvalid={!!errors.message}
               />
+              <Form.Control.Feedback tooltip type="invalid">{errors.message}</Form.Control.Feedback>
               <InputGroup.Append>
                 <Button variant="primary" type="submit" disabled={isSubmitting}>{t('elements.sendButton')}</Button>
               </InputGroup.Append>
