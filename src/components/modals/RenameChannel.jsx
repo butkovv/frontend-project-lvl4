@@ -35,13 +35,13 @@ const RenameChannelModal = ({
   });
 
   const submitNewChannelName = async (values, { setSubmitting, setErrors }) => {
-    renameChannel({ id, name: values.name })
-      .then(unwrapResult)
-      .then(() => {
-        setSubmitting(false);
-        toggleModal({ show: false });
-      })
-      .catch((error) => setErrors({ error: error.message }));
+    try {
+      unwrapResult(await renameChannel({ id, name: values.name }));
+      setSubmitting(false);
+      toggleModal({ show: false });
+    } catch (error) {
+      setErrors({ error: error.message });
+    }
   };
 
   const schema = Yup.object().shape({

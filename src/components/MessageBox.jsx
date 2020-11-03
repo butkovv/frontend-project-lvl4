@@ -32,13 +32,13 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
       channelId: currentChannelId,
       nickname,
     };
-    addMessage(data)
-      .then(unwrapResult)
-      .then(() => {
-        resetForm();
-        setSubmitting(false);
-      })
-      .catch((error) => setErrors({ error: error.message }));
+    try {
+      unwrapResult(await addMessage(data));
+      resetForm();
+      setSubmitting(false);
+    } catch (error) {
+      setErrors({ error: error.message });
+    }
   };
 
   const schema = Yup.object().shape({

@@ -34,13 +34,13 @@ const NewChannelModal = ({
 
   const submitNewChannel = async (value, { setSubmitting, setErrors }) => {
     const name = value.channelName;
-    createChannel({ name })
-      .then(unwrapResult)
-      .then(() => {
-        setSubmitting(false);
-        toggleModal({ show: false });
-      })
-      .catch((error) => setErrors({ error: error.message }));
+    try {
+      unwrapResult(await createChannel({ name }));
+      setSubmitting(false);
+      toggleModal({ show: false });
+    } catch (error) {
+      setErrors({ error: error.message });
+    }
   };
 
   const schema = Yup.object().shape({
