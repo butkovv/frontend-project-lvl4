@@ -11,6 +11,7 @@ import App from './components/App.jsx';
 import '../assets/application.scss';
 import reducers, { actions } from './slices';
 import UserNameContext from './context.jsx';
+import './lib/i18n.js';
 
 // eslint-disable-next-line no-unused-vars
 const rollbar = new Rollbar({
