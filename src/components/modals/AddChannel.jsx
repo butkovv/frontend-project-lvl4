@@ -4,28 +4,18 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import * as Yup from 'yup';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
 
-const mapStateToProps = (state) => {
-  const { modal: { show } } = state;
-  return { show };
-};
-
-const actionCreators = {
-  toggleModal: actions.toggleModal,
-  createChannel: asyncActions.createChannel,
-};
-
-const NewChannelModal = ({
-  show, toggleModal, createChannel,
-}) => {
+const NewChannelModal = () => {
+  const { show } = useSelector((state) => state.modal);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const handleClose = () => toggleModal({ show: false });
+  const handleClose = () => dispatch(actions.toggleModal({ show: false }));
 
   const inputRef = useRef();
   useEffect(() => {
@@ -35,9 +25,9 @@ const NewChannelModal = ({
   const submitNewChannel = async (value, { setSubmitting, setErrors }) => {
     const name = value.channelName;
     try {
-      unwrapResult(await createChannel({ name }));
+      unwrapResult(await dispatch(asyncActions.createChannel({ name })));
       setSubmitting(false);
-      toggleModal({ show: false });
+      dispatch(actions.toggleModal({ show: false }));
     } catch (error) {
       setErrors({ error: error.message });
     }
@@ -101,4 +91,4 @@ const NewChannelModal = ({
     </>
   );
 };
-export default connect(mapStateToProps, actionCreators)(NewChannelModal);
+export default NewChannelModal;

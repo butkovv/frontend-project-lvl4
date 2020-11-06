@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -9,22 +9,14 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import { useTranslation } from 'react-i18next';
-import UserNameContext from '../context.jsx';
+import UserNameContext from '../context.js';
 import { asyncActions } from '../slices';
 
-const mapStateToProps = (state) => {
-  const { channels: { currentChannelId } } = state;
-  return { currentChannelId };
-};
-
-const actionCreators = {
-  addMessage: asyncActions.addMessage,
-};
-
-const MessageBox = ({ currentChannelId, addMessage }) => {
-  const { t } = useTranslation();
-
+const MessageBox = () => {
+  const { currentChannelId } = useSelector((state) => state.channels);
+  const dispatch = useDispatch();
   const nickname = useContext(UserNameContext);
+  const { t } = useTranslation();
 
   const submitMessage = async (value, { setSubmitting, resetForm, setErrors }) => {
     const data = {
@@ -33,7 +25,7 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
       nickname,
     };
     try {
-      unwrapResult(await addMessage(data));
+      unwrapResult(await dispatch(asyncActions.addMessage(data)));
       resetForm();
       setSubmitting(false);
     } catch (error) {
@@ -87,4 +79,4 @@ const MessageBox = ({ currentChannelId, addMessage }) => {
     </div>
   );
 };
-export default connect(mapStateToProps, actionCreators)(MessageBox);
+export default MessageBox;

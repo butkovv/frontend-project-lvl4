@@ -4,37 +4,27 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
 
-const mapStateToProps = (state) => {
-  const { modal } = state;
-  const { show, extra } = modal;
-  return { show, id: extra.channelId };
-};
-
-const actionCreators = {
-  toggleModal: actions.toggleModal,
-  removeChannel: asyncActions.removeChannel,
-};
-
-const RemoveChannelModal = ({
-  show, id, toggleModal, removeChannel,
-}) => {
+const RemoveChannelModal = () => {
+  const { show } = useSelector((state) => state.modal);
+  const id = useSelector((state) => state.modal.extra.channelId);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const handleClose = () => toggleModal({ show: false });
+  const handleClose = () => dispatch(actions.toggleModal({ show: false }));
 
   const submitRemoval = async (values, { setSubmitting, setErrors }) => {
-    removeChannel({ id })
-      .then(unwrapResult)
-      .then(() => {
-        setSubmitting(false);
-        toggleModal({ show: false });
-      })
-      .catch((error) => setErrors({ error: error.message }));
+    try {
+      unwrapResult(await dispatch(asyncActions.removeChannel({ id })));
+      setSubmitting(false);
+      dispatch(actions.toggleModal({ show: false }));
+    } catch (error) {
+      setErrors({ error: error.message });
+    }
   };
 
   return (
@@ -74,4 +64,4 @@ const RemoveChannelModal = ({
     </>
   );
 };
-export default connect(mapStateToProps, actionCreators)(RemoveChannelModal);
+export default RemoveChannelModal;

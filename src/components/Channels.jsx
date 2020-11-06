@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -8,36 +8,27 @@ import { useTranslation } from 'react-i18next';
 import { actions } from '../slices';
 import Modal from './modals';
 
-const mapStateToProps = (state) => {
-  const channels = state.channels.items;
-  const { currentChannelId } = state.channels;
-  const modalType = state.modal.type;
-  return { channels, currentChannelId, modalType };
-};
-
-const actionCreators = {
-  setCurrentChannel: actions.setCurrentChannel,
-  toggleModal: actions.toggleModal,
-};
-const Channels = ({
-  setCurrentChannel, toggleModal, currentChannelId, channels, modalType,
-}) => {
+const Channels = () => {
+  const channels = useSelector((state) => state.channels.items);
+  const { currentChannelId } = useSelector((state) => state.channels);
+  const modalType = useSelector((state) => state.modal.type);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const handleSelectChannel = (id) => () => {
-    setCurrentChannel({ id });
+    dispatch(actions.setCurrentChannel({ id }));
   };
 
   const handleAddChannel = () => {
-    toggleModal({ show: true, type: 'AddChannel' });
+    dispatch(actions.toggleModal({ show: true, type: 'AddChannel' }));
   };
 
   const handleRemoveChannel = (channelId) => () => {
-    toggleModal({ show: true, type: 'RemoveChannel', channelId });
+    dispatch(actions.toggleModal({ show: true, type: 'RemoveChannel', channelId }));
   };
 
   const handleRenameChannel = (channelId) => () => {
-    toggleModal({ show: true, type: 'RenameChannel', channelId });
+    dispatch(actions.toggleModal({ show: true, type: 'RenameChannel', channelId }));
   };
 
   const renderButton = ({ id, name, removable }) => {
@@ -88,4 +79,4 @@ const Channels = ({
     </div>
   );
 };
-export default connect(mapStateToProps, actionCreators)(Channels);
+export default Channels;

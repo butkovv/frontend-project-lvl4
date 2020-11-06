@@ -5,28 +5,19 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
 import { actions, asyncActions } from '../../slices';
 
-const mapStateToProps = (state) => {
-  const { modal: { show, extra } } = state;
-  const id = extra.channelId;
-  const { name } = state.channels.items.find((ch) => ch.id === id);
-  return { show, id, name };
-};
-
-const actionCreators = {
-  toggleModal: actions.toggleModal,
-  renameChannel: asyncActions.renameChannel,
-};
-
-const RenameChannelModal = ({
-  show, id, name, toggleModal, renameChannel,
-}) => {
+const RenameChannelModal = () => {
+  const { show } = useSelector((state) => state.modal);
+  const id = useSelector((state) => state.modal.extra.channelId);
+  const { name } = useSelector((state) => state.channels.items.find((ch) => ch.id === id));
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const handleClose = () => toggleModal({ show: false });
+
+  const handleClose = () => dispatch(actions.toggleModal({ show: false }));
 
   const inputRef = useRef();
   useEffect(() => {
@@ -36,9 +27,9 @@ const RenameChannelModal = ({
 
   const submitNewChannelName = async (values, { setSubmitting, setErrors }) => {
     try {
-      unwrapResult(await renameChannel({ id, name: values.name }));
+      unwrapResult(await dispatch(asyncActions.renameChannel({ id, name: values.name })));
       setSubmitting(false);
-      toggleModal({ show: false });
+      dispatch(actions.toggleModal({ show: false }));
     } catch (error) {
       setErrors({ error: error.message });
     }
@@ -101,4 +92,4 @@ const RenameChannelModal = ({
     </>
   );
 };
-export default connect(mapStateToProps, actionCreators)(RenameChannelModal);
+export default RenameChannelModal;
