@@ -14,14 +14,17 @@ const RemoveChannelModal = () => {
   const id = useSelector((state) => state.modal.extra.channelId);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { toggleModal } = actions;
+  const { removeChannel } = asyncActions;
 
-  const handleClose = () => dispatch(actions.toggleModal({ show: false }));
+  const handleClose = () => dispatch(toggleModal({ show: false }));
 
   const submitRemoval = async (values, { setSubmitting, setErrors }) => {
     try {
-      unwrapResult(await dispatch(asyncActions.removeChannel({ id })));
+      const result = await dispatch(removeChannel({ id }));
+      unwrapResult(result);
       setSubmitting(false);
-      dispatch(actions.toggleModal({ show: false }));
+      dispatch(toggleModal({ show: false }));
     } catch (error) {
       setErrors({ error: error.message });
     }

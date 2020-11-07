@@ -17,6 +17,7 @@ const MessageBox = () => {
   const dispatch = useDispatch();
   const nickname = useContext(UserNameContext);
   const { t } = useTranslation();
+  const { addMessage } = asyncActions;
 
   const submitMessage = async (value, { setSubmitting, resetForm, setErrors }) => {
     const data = {
@@ -25,7 +26,8 @@ const MessageBox = () => {
       nickname,
     };
     try {
-      unwrapResult(await dispatch(asyncActions.addMessage(data)));
+      const result = await dispatch(addMessage(data));
+      unwrapResult(result);
       resetForm();
       setSubmitting(false);
     } catch (error) {
@@ -41,9 +43,7 @@ const MessageBox = () => {
     <div className="mt-auto">
       <Formik
         onSubmit={submitMessage}
-        initialValues={{
-          message: '',
-        }}
+        initialValues={{ message: '' }}
         validationSchema={schema}
       >
         {({

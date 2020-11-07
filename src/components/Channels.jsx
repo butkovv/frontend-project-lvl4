@@ -14,21 +14,22 @@ const Channels = () => {
   const modalType = useSelector((state) => state.modal.type);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { toggleModal, setCurrentChannel } = actions;
 
   const handleSelectChannel = (id) => () => {
-    dispatch(actions.setCurrentChannel({ id }));
+    dispatch(setCurrentChannel({ id }));
   };
 
   const handleAddChannel = () => {
-    dispatch(actions.toggleModal({ show: true, type: 'AddChannel' }));
+    dispatch(toggleModal({ show: true, type: 'AddChannel' }));
   };
 
   const handleRemoveChannel = (channelId) => () => {
-    dispatch(actions.toggleModal({ show: true, type: 'RemoveChannel', channelId }));
+    dispatch(toggleModal({ show: true, type: 'RemoveChannel', channelId }));
   };
 
   const handleRenameChannel = (channelId) => () => {
-    dispatch(actions.toggleModal({ show: true, type: 'RenameChannel', channelId }));
+    dispatch(toggleModal({ show: true, type: 'RenameChannel', channelId }));
   };
 
   const renderButton = ({ id, name, removable }) => {
@@ -73,7 +74,7 @@ const Channels = () => {
         <button type="button" className="ml-auto p-0 btn btn-link" onClick={handleAddChannel}>+</button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill">
-        {channels && channels.map(renderButton)}
+        {channels.map(renderButton)}
       </ul>
       {modalType && <ModalWindow />}
     </div>

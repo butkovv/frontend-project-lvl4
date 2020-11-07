@@ -14,8 +14,10 @@ const NewChannelModal = () => {
   const { show } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { toggleModal } = actions;
+  const { createChannel } = asyncActions;
 
-  const handleClose = () => dispatch(actions.toggleModal({ show: false }));
+  const handleClose = () => dispatch(toggleModal({ show: false }));
 
   const inputRef = useRef();
   useEffect(() => {
@@ -25,9 +27,10 @@ const NewChannelModal = () => {
   const submitNewChannel = async (value, { setSubmitting, setErrors }) => {
     const name = value.channelName;
     try {
-      unwrapResult(await dispatch(asyncActions.createChannel({ name })));
+      const result = await dispatch(createChannel({ name }));
+      unwrapResult(result);
       setSubmitting(false);
-      dispatch(actions.toggleModal({ show: false }));
+      dispatch(toggleModal({ show: false }));
     } catch (error) {
       setErrors({ error: error.message });
     }

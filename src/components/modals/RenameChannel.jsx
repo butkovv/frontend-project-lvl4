@@ -16,8 +16,10 @@ const RenameChannelModal = () => {
   const { name } = useSelector((state) => state.channels.items.find((ch) => ch.id === id));
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { toggleModal } = actions;
+  const { renameChannel } = asyncActions;
 
-  const handleClose = () => dispatch(actions.toggleModal({ show: false }));
+  const handleClose = () => dispatch(toggleModal({ show: false }));
 
   const inputRef = useRef();
   useEffect(() => {
@@ -27,9 +29,10 @@ const RenameChannelModal = () => {
 
   const submitNewChannelName = async (values, { setSubmitting, setErrors }) => {
     try {
-      unwrapResult(await dispatch(asyncActions.renameChannel({ id, name: values.name })));
+      const result = await dispatch(renameChannel({ id, name: values.name }));
+      unwrapResult(result);
       setSubmitting(false);
-      dispatch(actions.toggleModal({ show: false }));
+      dispatch(toggleModal({ show: false }));
     } catch (error) {
       setErrors({ error: error.message });
     }
