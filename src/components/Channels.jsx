@@ -7,12 +7,12 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import { useTranslation } from 'react-i18next';
 import { actions } from '../slices';
 import Modal from './modals';
-import selectors from '../selectors';
+import { getChannels, getCurrentChannelId, getModalType } from '../selectors';
 
 const Channels = () => {
-  const channels = useSelector(selectors.channels);
-  const currentChannelId = useSelector(selectors.currentChannelId);
-  const modalType = useSelector(selectors.modalType);
+  const channels = useSelector(getChannels);
+  const currentChannelId = useSelector(getCurrentChannelId);
+  const modalType = useSelector(getModalType);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { toggleModal, setCurrentChannel } = actions;

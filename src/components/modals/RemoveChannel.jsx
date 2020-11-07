@@ -8,11 +8,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
-import selectors from '../../selectors';
+import { getShowModal, getChannelId } from '../../selectors';
 
 const RemoveChannelModal = () => {
-  const show = useSelector(selectors.show);
-  const id = useSelector(selectors.id);
+  const show = useSelector(getShowModal);
+  const id = useSelector(getChannelId);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { toggleModal } = actions;

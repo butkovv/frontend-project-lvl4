@@ -9,10 +9,10 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { actions, asyncActions } from '../../slices';
-import selectors from '../../selectors';
+import { getShowModal } from '../../selectors';
 
 const NewChannelModal = () => {
-  const show = useSelector(selectors.show);
+  const show = useSelector(getShowModal);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { toggleModal } = actions;

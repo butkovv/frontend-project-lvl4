@@ -9,12 +9,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { Formik } from 'formik';
 import { actions, asyncActions } from '../../slices';
-import selectors from '../../selectors';
+import { getShowModal, getChannelId, getChannelName } from '../../selectors';
 
 const RenameChannelModal = () => {
-  const show = useSelector(selectors.show);
-  const id = useSelector(selectors.id);
-  const name = useSelector(selectors.name);
+  const show = useSelector(getShowModal);
+  const id = useSelector(getChannelId);
+  const name = useSelector(getChannelName);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { toggleModal } = actions;

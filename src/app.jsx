@@ -41,17 +41,20 @@ export default (gon, connection) => {
     preloadedState,
   });
 
+  const {
+    addMessageSuccess, createChannelSuccess, removeChannelSuccess, renameChannelSuccess,
+  } = actions;
   connection.on('newMessage', (msg) => {
-    store.dispatch(actions.addMessageSuccess(msg.data.attributes));
+    store.dispatch(addMessageSuccess(msg.data.attributes));
   });
   connection.on('newChannel', (channel) => {
-    store.dispatch(actions.createChannelSuccess(channel.data.attributes));
+    store.dispatch(createChannelSuccess(channel.data.attributes));
   });
   connection.on('removeChannel', (response) => {
-    store.dispatch(actions.removeChannelSuccess(response.data));
+    store.dispatch(removeChannelSuccess(response.data));
   });
   connection.on('renameChannel', (response) => {
-    store.dispatch(actions.renameChannelSuccess(response.data.attributes));
+    store.dispatch(renameChannelSuccess(response.data.attributes));
   });
 
   render(

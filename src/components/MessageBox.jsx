@@ -11,10 +11,10 @@ import Alert from 'react-bootstrap/Alert';
 import { useTranslation } from 'react-i18next';
 import UserNameContext from '../context.js';
 import { asyncActions } from '../slices';
-import selectors from '../selectors';
+import { getCurrentChannelId } from '../selectors';
 
 const MessageBox = () => {
-  const currentChannelId = useSelector(selectors.currentChannelId);
+  const currentChannelId = useSelector(getCurrentChannelId);
   const dispatch = useDispatch();
   const nickname = useContext(UserNameContext);
   const { t } = useTranslation();
