@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import selectors from '../selectors';
 
 const Messages = () => {
-  const { currentChannelId } = useSelector((state) => state.channels);
-  const messages = useSelector((state) => state.messages
-    .filter(({ channelId }) => (channelId === currentChannelId)));
+  const messages = useSelector(selectors.messages);
 
   const renderMessage = ({ id, nickname, body }) => (
     <div key={id}>
