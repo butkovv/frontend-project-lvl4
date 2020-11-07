@@ -6,7 +6,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { useTranslation } from 'react-i18next';
 import { actions } from '../slices';
-import Modal from './modals';
+import displayModal from './modals';
 import { getChannels, getCurrentChannelId, getModalType } from '../selectors';
 
 const Channels = () => {
@@ -66,7 +66,7 @@ const Channels = () => {
     );
   };
 
-  const ModalWindow = Modal(modalType);
+  const ModalWindow = displayModal(modalType);
 
   return (
     <div className="col-3 border-right">
